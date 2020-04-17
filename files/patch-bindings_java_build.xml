@@ -1,0 +1,21 @@
+--- bindings/java/build.xml.orig	2020-04-17 14:35:36 UTC
++++ bindings/java/build.xml
+@@ -56,7 +56,6 @@
+   <path id="alljars">
+      <path refid="libjars"/>
+      <fileset dir="${sigar-bin}/lib" includes="${sigar.jar}"/>
+-     <fileset dir="${ant.library.dir}" includes="junit*.jar"/>
+   </path>
+ 
+   <target name="javadoc_check">
+@@ -308,6 +307,10 @@
+      <jvmarg line="${junit.args} ${junit.mx}"/>
+ 
+      <classpath refid="alljars"/>
++     <classpath>
++       <pathelement location="${ant.library.dir}/ant-junit.jar"/>
++       <pathelement path="${junitjar}"/>
++     </classpath>
+      <formatter type="xml"/>
+ 
+      <batchtest fork="yes" todir="${testresults}">

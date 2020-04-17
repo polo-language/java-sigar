@@ -30,6 +30,8 @@ USE_JAVA=	yes
 JAVA_RUN=	yes
 USE_GCC=	any
 NO_CCACHE=	yes
+TEST_DEPENDS=   ${JAVALIBDIR}/junit.jar:java/junit
+TEST_TARGET=	test
 
 ANT_CMD?=	${LOCALBASE}/bin/ant
 ANT=		${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
@@ -54,9 +56,12 @@ PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \
 do-build:
 	${MKDIR} ${WRKSRC}/bin
 .if ${CC} != "gcc"
-	${LN} -s ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
+	${LN} -sf ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
 .endif
 	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT}
+
+do-test:
+	@cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunitjar="${JAVALIBDIR}/junit.jar" test
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/bindings/java/sigar-bin/lib/sigar.jar \
