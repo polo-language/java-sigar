@@ -8,7 +8,15 @@
    </path>
  
    <target name="javadoc_check">
-@@ -308,6 +307,10 @@
+@@ -298,7 +297,6 @@
+          jvm="${java.home}/bin/java"
+          jar="${sigar-bin}/lib/${sigar.jar}">
+      <arg value="version"/>
+-     <arg value="${junit.args}"/>
+    </java>
+ 
+    <property name="junit.mx" value="-Dcom.sun.management.jmxremote"/>
+@@ -308,6 +306,10 @@
       <jvmarg line="${junit.args} ${junit.mx}"/>
  
       <classpath refid="alljars"/>
