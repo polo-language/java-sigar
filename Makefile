@@ -22,7 +22,7 @@ LIB_DEPENDS=	libsigar.so:devel/sigar
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	polo-language
-GH_TAGNAME=	5e03601
+GH_TAGNAME=	58197e0
 
 USES=		perl5
 USE_PERL5=	build
@@ -58,10 +58,10 @@ do-build:
 .if ${CC} != "gcc"
 	${LN} -sf ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
 .endif
-	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunitjar="${JAVALIBDIR}/junit.jar"
+	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunit.jar="${JAVALIBDIR}/junit.jar" build-tests
 
 do-test:
-	@cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunitjar="${JAVALIBDIR}/junit.jar" test
+	@cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunit.jar="${JAVALIBDIR}/junit.jar" test
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/bindings/java/sigar-bin/lib/sigar.jar \
