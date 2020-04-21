@@ -58,7 +58,7 @@ do-build:
 .if ${CC} != "gcc"
 	${LN} -sf ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
 .endif
-	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT}
+	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunitjar="${JAVALIBDIR}/junit.jar"
 
 do-test:
 	@cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunitjar="${JAVALIBDIR}/junit.jar" test
