@@ -22,7 +22,7 @@ LIB_DEPENDS=	libsigar.so:devel/sigar
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	polo-language
-GH_TAGNAME=	58197e0
+GH_TAGNAME=	8869ac7
 
 USES=		perl5
 USE_PERL5=	build
