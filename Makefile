@@ -19,10 +19,7 @@ BROKEN_powerpc64=	fails to install: bindings/java/sigar-bin/lib/libsigar-powerpc
 
 BUILD_DEPENDS=	${ANT_CMD}:devel/apache-ant
 LIB_DEPENDS=	libsigar.so:devel/sigar
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	polo-language
-GH_TAGNAME=	8869ac7
+TEST_DEPENDS=	${JAVALIBDIR}/junit.jar:java/junit
 
 USES=		perl5
 USE_PERL5=	build
@@ -30,28 +27,27 @@ USE_JAVA=	yes
 JAVA_RUN=	yes
 USE_GCC=	any
 NO_CCACHE=	yes
-TEST_DEPENDS=   ${JAVALIBDIR}/junit.jar:java/junit
 TEST_TARGET=	test
 
 ANT_CMD?=	${LOCALBASE}/bin/ant
 ANT=		${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	polo-language
+GH_TAGNAME=	8869ac7
 
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD
 PLATFORM_VER=	1
 .else
-IGNORE=		${OPSYS} platform is not supported
+IGNORE=		platform ${OPSYS} is not supported
 .endif
 
 LIBNAME=	libsigar-${ARCH:S,i386,x86,}-${OPSYS:tl}-${PLATFORM_VER}.so
-
-PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \
-		%%JAVAJARDIR%%/${LIBNAME}
-
-#post-patch:
-#	@${REINPLACE_CMD} s/gcc/${CC}/ \
-#                ${WRKSRC}/bindings/java/hyperic_jni/jni-build.xml
+USE_LDCONFIG=	${JAVAJARDIR}
+PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
+		${JAVAJARDIR}/${LIBNAME}
 
 do-build:
 	${MKDIR} ${WRKSRC}/bin
