@@ -34,7 +34,7 @@ ANT=		${SETENV} JAVA_HOME=${JAVA_HOME} ${ANT_CMD}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	polo-language
-GH_TAGNAME=	8869ac7
+GH_TAGNAME=	c5b7559
 
 .include <bsd.port.pre.mk>
 
@@ -54,7 +54,7 @@ do-build:
 .if ${CC} != "gcc"
 	${LN} -sf ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
 .endif
-	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunit.jar="${JAVALIBDIR}/junit.jar" build-tests
+	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} build
 
 do-test:
 	@cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} -Djunit.jar="${JAVALIBDIR}/junit.jar" test
