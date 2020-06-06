@@ -25,7 +25,6 @@ USES=		perl5
 USE_PERL5=	build
 USE_JAVA=	yes
 JAVA_RUN=	yes
-USE_GCC=	any
 NO_CCACHE=	yes
 TEST_TARGET=	test
 
@@ -52,7 +51,7 @@ PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
 do-build:
 	${MKDIR} ${WRKSRC}/bin
 .if ${CC} != "gcc"
-	${LN} -sf ${LOCALBASE}/bin/${CC} ${WRKSRC}/bin/gcc
+	${LN} -sf `which ${CC}` ${WRKSRC}/bin/gcc
 .endif
 	cd ${WRKSRC}/bindings/java && PATH=${PATH}:${WRKSRC}/bin ${ANT} build
 
@@ -62,7 +61,7 @@ do-test:
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/bindings/java/sigar-bin/lib/sigar.jar \
 		${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
-	${INSTALL_LIB} ${WRKSRC}/bindings/java/sigar-bin/lib/libsigar-${ARCH:S,i386,x86,}-freebsd-${PLATFORM_VER}.so \
+	${INSTALL_LIB} ${WRKSRC}/bindings/java/sigar-bin/lib/${LIBNAME} \
 		${STAGEDIR}${JAVAJARDIR}/${LIBNAME}
 
 .include <bsd.port.post.mk>
