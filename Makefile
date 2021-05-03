@@ -1,5 +1,5 @@
 # Created by: Tom Judge <tj@FreeBSD.org>
-# $FreeBSD: head/java/sigar/Makefile 507372 2019-07-26 20:46:53Z gerald $
+# $FreeBSD: head/java/sigar/Makefile 559403 2020-12-27 19:00:14Z glewis $
 
 PORTNAME=	sigar
 PORTVERSION=	1.7.3
@@ -15,7 +15,6 @@ LICENSE_FILE=	${WRKSRC}/NOTICE
 
 BROKEN_armv6=		fails to compile: jni-build.xml: gcc failed with return code 1
 BROKEN_armv7=		fails to compile: jni-build.xml: gcc failed with return code 1
-BROKEN_powerpc64=	fails to install: bindings/java/sigar-bin/lib/libsigar-powerpc64-freebsd-1.so: No such file or directory
 
 BUILD_DEPENDS=	${ANT_CMD}:devel/apache-ant
 LIB_DEPENDS=	libsigar.so:devel/sigar
@@ -24,6 +23,7 @@ TEST_DEPENDS=	${JAVALIBDIR}/junit.jar:java/junit
 USES=		perl5
 USE_PERL5=	build
 USE_JAVA=	yes
+JAVA_VERSION=	8 11
 JAVA_RUN=	yes
 NO_CCACHE=	yes
 TEST_TARGET=	test
@@ -43,7 +43,7 @@ PLATFORM_VER=	1
 IGNORE=		platform ${OPSYS} is not supported
 .endif
 
-LIBNAME=	libsigar-${ARCH:S,i386,x86,}-${OPSYS:tl}-${PLATFORM_VER}.so
+LIBNAME=	libsigar-${ARCH:S,i386,x86,:S,powerpc64,ppc64,}-${OPSYS:tl}-${PLATFORM_VER}.so
 USE_LDCONFIG=	${JAVAJARDIR}
 PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}.jar \
 		${JAVAJARDIR}/${LIBNAME}
@@ -61,7 +61,7 @@ do-test:
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/bindings/java/sigar-bin/lib/sigar.jar \
 		${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
-	${INSTALL_LIB} ${WRKSRC}/bindings/java/sigar-bin/lib/${LIBNAME} \
+	${INSTALL_LIB} ${WRKSRC}/bindings/java/sigar-bin/lib/libsigar-${ARCH:S,i386,x86,:S,powerpc64,ppc64,}-freebsd-${PLATFORM_VER}.so \
 		${STAGEDIR}${JAVAJARDIR}/${LIBNAME}
 
 .include <bsd.port.post.mk>
